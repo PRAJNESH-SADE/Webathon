@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Adjustment Request</title>
+  <link rel="stylesheet" href="s.css">
+</head>
+<body>
+  <h1>Adjustment Request</h1>
+  <form id="adjustmentForm">
+    <label for="facultyName">Faculty Name:</label>
+    <input type="text" id="facultyName" name="facultyName" required><br><br>
+
+    <label for="adjustmentReason">Reason for Adjustment:</label>
+    <textarea id="adjustmentReason" name="adjustmentReason" required></textarea><br><br>
+
+    <button type="submit">Submit Request</button>
+  </form>
+
+  <script>
+    const adjustmentForm = document.getElementById('adjustmentForm');
+
+    adjustmentForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = new FormData(adjustmentForm);
+      const requestData = Object.fromEntries(formData);
+
+      // Send a POST request to the backend to handle the adjustment request
+      fetch('/adjustment-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      })
+      .then((response) => {
+        if (response.ok) {
+          alert('Adjustment request submitted successfully.');
+          adjustmentForm.reset();
+        } else {
+          alert('Error submitting the request. Please try again.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again later.');
+      });
+    });
+  </script>
+</body>
+</html>
